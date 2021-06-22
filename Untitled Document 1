@@ -1,0 +1,55 @@
+0.Ajout de ->
+	setGame : function (ref) {
+            this.game = ref;
+        },
+... dans player.js (a ajouter aussi dans compteur.js ??)
+
+
+1.modif de ->
+	var sheep = {dom: {parentNode: {removeChild: function (target) {
+		target.style.display = 'none';
+    	}}}};
+... dans player.js (a ajouter aussi dans compteur.js ??)
+
+
+2.0 (fix) .classe eronee dans game.js change this ('.board .mini-grid') into this ('.mini-grid'); game.js L.35
+2.ont parcourt la grille player par un double foreach, dans un switch on verif si la value est 1/2/3/4 si c'est le cas c'est qu'un bateau est present alors on transmet au coordonee corespondante sr la mini-grille la color du navire. ajout ->
+	  var grid = this.miniGrid;
+          _.forEach(player.grid, function(value, key) {
+              _.forEach(value, function(value2, key2) {
+                var nav = null;
+                switch(value2)
+                {
+                    case 1:
+                      var nav = shipFactory.build(shipFactory.TYPE_BATTLESHIP);
+                      break;
+                    case 2:
+                      var nav = shipFactory.build(shipFactory.TYPE_DESTROYER);
+                      break;
+                    case 3:
+                      var nav = shipFactory.build(shipFactory.TYPE_SUBMARINE);
+                      break;
+                    case 4:
+                      var nav = shipFactory.build(shipFactory.TYPE_SMALL_SHIP);
+                      break;
+                };
+                if (nav !== null) {
+                  var row = key + 1;
+                  var target = grid.querySelector('.row:nth-child(' + row + ') .cell:nth-child(' + key2 + ')');
+                  target.style.backgroundColor = nav.color;
+... dans game.js.
+
+2.1 (FIX), changer les couleur des navires pour corespondre aux images. exemple -> "#577cc2" into "#2a298f" in shipFactory.js l.88
+2.2 (FIX), le point d'encrage des coordonne du bateau lors du placement so le calcule du placement dans le dom depuis l'ecouteur d'evenement mousemove a etait changer pour que la sourie soit decaler vers la droite. ->
+                if (ship.life < 4) {
+                  ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + (utils.CELL_SIZE * 1) + "px";
+                }
+                else {
+                  ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + (utils.CELL_SIZE * 2) + "px";
+                }
+ ... dans game.js L.145
+
+3.
+
+
+4. 
